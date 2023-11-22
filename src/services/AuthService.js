@@ -7,6 +7,7 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
+import bcrypt from "bcrypt";
 import db from "../config/firebaseConfig.js";
 import convertDateFromTimestamp from "../utils/dateConverter.js";
 
@@ -15,10 +16,13 @@ const authRef = collection(db, "users");
 export default class AuthService {
   static async saveUser(data) {
     try {
+      const salt = await bcrypt.genSalt(12);
+      const hash = await bcrypt.hash(data.password, salt);
+
       const newUser = await addDoc(authRef, {
         name: data.name,
         email: data.email,
-        password: data.password,
+        password: hash,
         createdAt: new Date(),
         updatedAt: new Date(),
         lastLogin: new Date(),
