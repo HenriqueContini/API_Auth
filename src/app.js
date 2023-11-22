@@ -1,9 +1,9 @@
 import express from "express";
+import route from "./routes/routes.js";
 
 const app = express();
+app.use(express.json());
 
-app.get("/oi", (req, res) => {
-  res.status(200).send("Hello world!");
-});
+route(app);
 
 export default app;
