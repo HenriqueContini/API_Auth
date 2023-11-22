@@ -1,9 +1,59 @@
-import { collection, where, getDocs, query } from "firebase/firestore";
+import {
+  collection,
+  where,
+  getDocs,
+  query,
+  addDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import db from "../config/firebaseConfig.js";
+import convertDateFromTimestamp from "../utils/dateConverter.js";
 
 const authRef = collection(db, "users");
 
 export default class AuthService {
+  static async saveUser(data) {
+    try {
+      const newUser = await addDoc(authRef, {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        lastLogin: new Date(),
+        phone: data.phone,
+      });
+
+      return newUser.id;
+    } catch (error) {
+      console.log(error);
+      throw new Error(error.message);
+    }
+  }
+
+  static async getUserData(id) {
+    try {
+      const userRef = doc(db, "users", id);
+      const user = await getDoc(userRef);
+
+      if (user.exists())
+        return {
+          id: user.id,
+          data_criacao: convertDateFromTimestamp(user.data().createdAt.seconds),
+          data_atualizacao: convertDateFromTimestamp(
+            user.data().updatedAt.seconds
+          ),
+          ultimo_login: convertDateFromTimestamp(user.data().lastLogin.seconds),
+          token: user.id,
+        };
+
+      return null;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
   static async checkIfEmailExists(email) {
     try {
       const response = await getDocs(

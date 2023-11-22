@@ -7,12 +7,14 @@ export default class AuthController {
         name: req.body.nome,
         email: req.body.email,
         password: req.body.senha,
-        phone: req.body.telefone.map((item) => {
-          return {
-            areaCode: item.ddd,
-            phoneNumber: item.numero,
-          };
-        }),
+        phone: !req.body.telefone
+          ? null
+          : req.body.telefone.map((item) => {
+              return {
+                areaCode: item.ddd,
+                phoneNumber: item.numero,
+              };
+            }),
       };
 
       if (!data.name || !data.email || !data.password) {
@@ -25,7 +27,9 @@ export default class AuthController {
         return res.status(400).json({ mensagem: "E-mail já existente" });
       }
 
-      res.send("OK");
+      const newUserId = await AuthService.saveUser(data);
+
+      res.status(200).json(await AuthService.getUserData(newUserId));
     } catch (error) {
       console.log(error.message);
       res.status(500).json({ message: "Ocorreu algum erro interno" });
