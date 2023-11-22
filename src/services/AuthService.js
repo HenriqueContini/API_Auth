@@ -6,6 +6,8 @@ import {
   addDoc,
   doc,
   getDoc,
+  updateDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import bcrypt from "bcrypt";
 import db from "../config/firebaseConfig.js";
@@ -14,7 +16,7 @@ import convertDateFromTimestamp from "../utils/dateConverter.js";
 const authRef = collection(db, "users");
 
 export default class AuthService {
-  static async saveUser(data) {
+  static async createUser(data) {
     try {
       const salt = await bcrypt.genSalt(12);
       const hash = await bcrypt.hash(data.password, salt);
@@ -36,6 +38,33 @@ export default class AuthService {
     }
   }
 
+  static async signIn(id, password) {
+    try {
+      const userRef = doc(db, "users", id);
+      const user = await getDoc(userRef);
+
+      if (!user.exists()) {
+        throw new Error("Usuário não existe");
+      }
+
+      const hashPassword = user.data().password;
+      const samePassword = await bcrypt.compare(password, hashPassword);
+
+      if (!samePassword) return null;
+
+      // Atualizar banco de dados
+      const docRef = doc(db, "users", id);
+      await updateDoc(docRef, {
+        lastLogin: serverTimestamp(),
+      });
+
+      return id;
+    } catch (error) {
+      console.log(error);
+      throw new Error(error.message);
+    }
+  }
+
   static async getUserData(id) {
     try {
       const userRef = doc(db, "users", id);
@@ -49,7 +78,6 @@ export default class AuthService {
             user.data().updatedAt.seconds
           ),
           ultimo_login: convertDateFromTimestamp(user.data().lastLogin.seconds),
-          token: user.id,
         };
 
       return null;
@@ -71,10 +99,10 @@ export default class AuthService {
       });
 
       if (aux.length > 0) {
-        return true;
+        return aux[0];
       }
 
-      return false;
+      return "";
     } catch (error) {
       throw new Error(error.message);
     }

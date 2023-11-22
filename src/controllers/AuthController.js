@@ -20,16 +20,54 @@ export default class AuthController {
       if (!data.name || !data.email || !data.password) {
         return res
           .status(400)
-          .json({ mensagem: "Campo: nome, email e senha são obrigatórios" });
+          .json({ mensagem: "Campos: nome, email e senha são obrigatórios" });
       }
 
       if (await AuthService.checkIfEmailExists(data.email)) {
         return res.status(400).json({ mensagem: "E-mail já existente" });
       }
 
-      const newUserId = await AuthService.saveUser(data);
+      const newUserId = await AuthService.createUser(data);
+      const userData = await AuthService.getUserData(newUserId);
 
-      res.status(200).json(await AuthService.getUserData(newUserId));
+      return res.status(200).json({ ...userData, token: userData.id });
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ message: "Ocorreu algum erro interno" });
+    }
+  }
+
+  static async signIn(req, res) {
+    try {
+      const data = {
+        email: req.body.email,
+        password: req.body.senha,
+      };
+
+      if (!data.email || !data.password) {
+        return res
+          .status(400)
+          .json({ mensagem: "Campos: email e senha são obrigatórios" });
+      }
+
+      const userId = await AuthService.checkIfEmailExists(data.email);
+
+      if (!userId) {
+        return res
+          .status(401)
+          .json({ mensagem: "Usuário e/ou senha inválidos" });
+      }
+
+      const token = await AuthService.signIn(userId, data.password);
+
+      if (!token) {
+        return res
+          .status(401)
+          .json({ mensagem: "Usuário e/ou senha inválidos" });
+      }
+
+      const userData = await AuthService.getUserData(userId);
+      return res.status(200).json({ ...userData, token: userData.id });
     } catch (error) {
       console.log(error.message);
       res.status(500).json({ message: "Ocorreu algum erro interno" });
