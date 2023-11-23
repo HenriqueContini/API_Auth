@@ -77,7 +77,7 @@ URL base da API: https://api-auth-3sxi.onrender.com
 
 ### 📌 Get User (buscar usuário)
 
-#### Request `GET https://api-auth-3sxi.onrender.com/user/getUser/:ID_usuario`
+#### Request `GET https://api-auth-3sxi.onrender.com/user/getUser/ID_usuario`
 
 Header Authentication com valor "Bearer {tokenJWT}"
 
