@@ -12,6 +12,7 @@ import {
 import bcrypt from "bcrypt";
 import db from "../config/firebaseConfig.js";
 import convertDateFromTimestamp from "../utils/dateConverter.js";
+import { generateToken } from "../utils/tokenJWT.js";
 
 const authRef = collection(db, "users");
 
@@ -31,7 +32,12 @@ export default class AuthService {
         phone: data.phone,
       });
 
-      return newUser.id;
+      const userData = await this.getUserData(newUser.id);
+
+      return {
+        ...userData,
+        token: generateToken(newUser.id),
+      };
     } catch (error) {
       console.log(error);
       throw new Error(error.message);
@@ -58,7 +64,7 @@ export default class AuthService {
         lastLogin: serverTimestamp(),
       });
 
-      return id;
+      return generateToken(id);
     } catch (error) {
       console.log(error);
       throw new Error(error.message);

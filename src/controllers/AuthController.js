@@ -27,10 +27,9 @@ export default class AuthController {
         return res.status(400).json({ mensagem: "E-mail já existente" });
       }
 
-      const newUserId = await AuthService.createUser(data);
-      const userData = await AuthService.getUserData(newUserId);
+      const userData = await AuthService.createUser(data);
 
-      return res.status(200).json({ ...userData, token: userData.id });
+      return res.status(200).json(userData);
     } catch (error) {
       console.log(error.message);
       res.status(500).json({ message: "Ocorreu algum erro interno" });
@@ -67,7 +66,7 @@ export default class AuthController {
       }
 
       const userData = await AuthService.getUserData(userId);
-      return res.status(200).json({ ...userData, token: userData.id });
+      return res.status(200).json({ ...userData, token });
     } catch (error) {
       console.log(error.message);
       res.status(500).json({ message: "Ocorreu algum erro interno" });
