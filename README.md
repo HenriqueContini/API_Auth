@@ -18,6 +18,7 @@ API RESTful para autenticação de usuários, que possui as operações de SignU
 ### 📌 Sign Up (cadastro)
 
 #### Request `POST /auth/signUp`
+
 ```
 {
   "nome": "Teste",
@@ -37,6 +38,7 @@ API RESTful para autenticação de usuários, que possui as operações de SignU
 ```
 
 #### Response
+
 ```
 {
   "id": "ID_usuario",
@@ -46,9 +48,11 @@ API RESTful para autenticação de usuários, que possui as operações de SignU
   "token": "tokenJWT"
 }
 ```
+
 ### 📌 Sign In (login)
 
 #### Request `POST /auth/signIn`
+
 ```
 {
   "email": "teste@gmail.com",
@@ -57,6 +61,7 @@ API RESTful para autenticação de usuários, que possui as operações de SignU
 ```
 
 #### Response
+
 ```
 {
   "id": "ID_usuario",
@@ -70,9 +75,11 @@ API RESTful para autenticação de usuários, que possui as operações de SignU
 ### 📌 Get User (buscar usuário)
 
 #### Request `GET /user/getUser/:ID_usuario`
+
 Header Authentication com valor "Bearer {tokenJWT}"
 
 #### Response
+
 ```
 {
   "id": "ID_usuario",
@@ -93,3 +100,7 @@ Header Authentication com valor "Bearer {tokenJWT}"
   "ultimo_login": "23/11/2023 10:38:40"
 }
 ```
+
+## ⚠️ Data e Hora
+
+Obs: As datas serão retornadas no locale: pt-BR e no timeZone: America/Sao_Paulo.
