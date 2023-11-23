@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import convertDateFromTimestamp from "./dateConverter.js";
 
 function generateToken(id) {
   try {
@@ -10,4 +11,18 @@ function generateToken(id) {
   }
 }
 
-export { generateToken };
+function verifyToken(token) {
+  try {
+    jwt.verify(token, process.env.JWTsecret);
+
+    return null;
+  } catch (error) {
+    if (error.name == "TokenExpiredError") {
+      return "Sessão inválida";
+    }
+
+    return "Não autorizado";
+  }
+}
+
+export { generateToken, verifyToken };
