@@ -1,4 +1,4 @@
-<h1 align="center">API Auth</h1>
+<h1 align="center">🔒 API Auth 🔑</h1>
 
 ### 🖥️ Projeto
 
