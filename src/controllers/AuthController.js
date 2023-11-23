@@ -7,9 +7,9 @@ export default class AuthController {
         name: req.body.nome,
         email: req.body.email,
         password: req.body.senha,
-        phone: !req.body.telefone
+        phone: !req.body.telefones
           ? null
-          : req.body.telefone.map((item) => {
+          : req.body.telefones.map((item) => {
               return {
                 areaCode: item.ddd,
                 phoneNumber: item.numero,
@@ -29,7 +29,7 @@ export default class AuthController {
 
       const userData = await AuthService.signUp(data);
 
-      return res.status(200).json(userData);
+      return res.status(201).json(userData);
     } catch (error) {
       console.log(error.message);
       res.status(500).json({ message: "Ocorreu algum erro interno" });

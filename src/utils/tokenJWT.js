@@ -1,9 +1,8 @@
 import jwt from "jsonwebtoken";
-import convertDateFromTimestamp from "./dateConverter.js";
 
 function generateToken(id) {
   try {
-    const token = jwt.sign({ id }, process.env.JWTsecret, { expiresIn: "1m" });
+    const token = jwt.sign({ id }, process.env.JWTsecret, { expiresIn: "30m" });
     return token;
   } catch (error) {
     console.log(error);

@@ -7,5 +7,5 @@ export default function tokenMiddleware(req, res, next) {
 
   if (!error) return next();
 
-  return res.send({ mensagem: error });
+  return res.status(401).send({ mensagem: error });
 }
