@@ -14,6 +14,7 @@ URL base da API: https://api-auth-3sxi.onrender.com
 - Firebase
 - jsonwebtoken
 - bcrypt
+- Padronização de estilos: Prettier
 
 ## 🏴󠁶󠁵󠁭󠁡󠁰󠁿 Endpoints
 
