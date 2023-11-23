@@ -17,7 +17,7 @@ import { generateToken } from "../utils/tokenJWT.js";
 const authRef = collection(db, "users");
 
 export default class AuthService {
-  static async createUser(data) {
+  static async signUp(data) {
     try {
       const salt = await bcrypt.genSalt(12);
       const hash = await bcrypt.hash(data.password, salt);

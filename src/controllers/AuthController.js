@@ -27,7 +27,7 @@ export default class AuthController {
         return res.status(400).json({ mensagem: "E-mail já existente" });
       }
 
-      const userData = await AuthService.createUser(data);
+      const userData = await AuthService.signUp(data);
 
       return res.status(200).json(userData);
     } catch (error) {
