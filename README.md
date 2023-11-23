@@ -2,7 +2,9 @@
 
 ### 🖥️ Projeto
 
-API RESTful para autenticação de usuários, que possui as operações de SignUp, SignIn e recuperação de dados do usuário (GetUser).
+API RESTful para autenticação de usuários, que possui as operações de SignUp, SignIn e recuperação de dados do usuário (GetUser). A API conta com criptografia de senha por meio do bcrypt e tokens JWT para sessão.
+
+URL base da API: https://api-auth-3sxi.onrender.com
 
 ### ⚙️ Tecnologias
 
@@ -17,7 +19,7 @@ API RESTful para autenticação de usuários, que possui as operações de SignU
 
 ### 📌 Sign Up (cadastro)
 
-#### Request `POST /auth/signUp`
+#### Request `POST https://api-auth-3sxi.onrender.com/auth/signUp`
 
 ```
 {
@@ -51,7 +53,7 @@ API RESTful para autenticação de usuários, que possui as operações de SignU
 
 ### 📌 Sign In (login)
 
-#### Request `POST /auth/signIn`
+#### Request `POST https://api-auth-3sxi.onrender.com/auth/signIn`
 
 ```
 {
@@ -74,7 +76,7 @@ API RESTful para autenticação de usuários, que possui as operações de SignU
 
 ### 📌 Get User (buscar usuário)
 
-#### Request `GET /user/getUser/:ID_usuario`
+#### Request `GET https://api-auth-3sxi.onrender.com/user/getUser/:ID_usuario`
 
 Header Authentication com valor "Bearer {tokenJWT}"
 
